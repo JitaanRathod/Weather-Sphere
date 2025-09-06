@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherSphere</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- App Header -->
+    <header class="app-header">
+        <div class="brand">
+            <div class="app-logo">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H8l4-5v4h3l-4 5z" fill="#fff"/>
+                </svg>
+            </div>
+            <div>
+                <div class="app-name">WeatherSphere</div>
+                <div class="app-tag">Live • Smooth • Beautiful</div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <div class="chips" id="recentChips">
+                <!-- Recent location chips will be inserted here -->
+            </div>
+            <button id="locateBtn" title="Get my location">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z"/><path d="M12 2v4M12 18v4M22 12h-4M6 12H2m7.5-5.5L5 2m14 14.5L14.5 12"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Left Column (Weather Details) -->
+        <div class="left-col">
+            <!-- Search -->
+            <div class="search-row">
+                <input type="text" id="searchInput" placeholder="Search city or click the map...">
+                <button id="searchBtn">Search</button>
+            </div>
+
+            <!-- Current Weather Card -->
+            <div class="card current-weather">
+                <div class="location-row">
+                    <h2 id="locationName">Loading...</h2>
+                    <div id="updatedAt" class="updated"></div>
+                </div>
+                <div class="main-info">
+                    <div class="icon-wrap">
+                        <img id="currentIcon" src="" alt="weather icon">
+                    </div>
+                    <div>
+                        <div id="currentTemp" class="temp">--°</div>
+                        <div id="currentCondition" class="cond">--</div>
+                    </div>
+                </div>
+                <div class="meta-grid">
+                    <div>
+                        <div class="meta-title">Feels Like</div>
+                        <div id="feelsLike" class="meta-val">--°</div>
+                    </div>
+                    <div>
+                        <div class="meta-title">Humidity</div>
+                        <div id="humidity" class="meta-val">--%</div>
+                    </div>
+                    <div>
+                        <div class="meta-title">Wind</div>
+                        <div id="windSpeed" class="meta-val">-- km/h</div>
+                    </div>
+                    <div>
+                        <div class="meta-title">Pressure</div>
+                        <div id="pressure" class="meta-val">-- hPa</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hourly Forecast Card -->
+            <div class="card">
+                <h3>Next 24 Hours</h3>
+                <div class="hourly-scroll" id="hourlyContainer">
+                    <!-- Hourly items will be injected by JS -->
+                </div>
+            </div>
+
+            <!-- 7-Day Forecast Card -->
+            <div class="card">
+                <h3>7-Day Forecast</h3>
+                <div class="daily-grid" id="dailyContainer">
+                    <!-- Daily items will be injected by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column (Map) -->
+        <aside class="right-col">
+            <div class="map-box">
+                <div class="map-header">
+                    <span><b>Map</b></span>
+                    <span class="map-hint"><b>Click anywhere to get weather</b></span>
+                </div>
+                <div id="map"></div>
+                <div class="map-footer">Map tiles © Stadia / © OpenStreetMap</div>
+            </div>
+        </aside>
+
+        <!-- Loading Overlay -->
+        <div id="loading" class="loading-overlay hidden">
+            <div class="loader"></div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
