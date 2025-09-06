@@ -9,7 +9,7 @@
     --max-width:1300px;
 }
 
-/* Reset */
+
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{
@@ -22,7 +22,6 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%,
     overflow:hidden;
 }
 
-/* --- CUSTOM SCROLLBAR --- */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -40,7 +39,6 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%,
   background-color: rgba(74, 144, 226, 0.6);
 }
 
-/* Header */
 .app-header{
     position:sticky;
     top:0;
@@ -80,7 +78,6 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%,
 .app-name{font-weight:700;font-size:18px;letter-spacing:0.4px}
 .app-tag{font-size:12px;color:var(--muted)}
 
-/* header actions */
 .header-actions{display:flex;align-items:center;gap:12px}
 #locateBtn { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--muted); transition: all 0.2s ease; }
 #locateBtn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
@@ -94,7 +91,6 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%,
 }
 .chips .chip:hover{transform:translateY(-4px);border-color:var(--accent);color:#fff}
 
-/* Main container */
 .container{
     display:flex;
     gap:22px;
@@ -108,7 +104,6 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%,
     overflow-y: auto; 
 }
 
-/* Left column (weather) */
 .left-col{
     flex:1 1 66%; 
     min-width:520px; 
@@ -116,12 +111,10 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%,
     flex-direction:column; 
     gap:18px; 
     overscroll-behavior-y: contain; 
-    /* Removed padding-right from here to fix mobile overflow */
 }
 
 .right-col{width:28%; min-width:300px; display:flex; flex-direction:column; gap:16px; align-items:stretch}
 
-/* Search row */
 .search-row{display:flex;gap:12px}
 .search-row input{
     flex:1;padding:12px 14px;border-radius:12px;border:1px solid var(--glass-border);
@@ -131,7 +124,6 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%,
 .search-row input:focus{box-shadow:0 8px 30px rgba(74,144,226,0.08);transform:translateY(-2px);border-color:var(--accent)}
 .search-row button{padding:12px 18px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:600;cursor:pointer}
 
-/* Cards */
 .card{
     background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
     border-radius: var(--card-radius);
@@ -141,13 +133,11 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%,
     backdrop-filter: blur(6px); 
 }
 
-/* Current Weather */
 .current-weather .location-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .current-weather h2{font-size:20px}
 .updated{font-size:12px;color:var(--muted)}
 .main-info{display:flex;gap:18px;align-items:center;padding:6px 0}
 
-/* Weather icon with hover + breathe */
 #currentIcon{
     transition: transform 0.4s ease, filter 0.3s ease;
     filter: drop-shadow(0 8px 18px rgba(2,6,23,0.6));
@@ -160,16 +150,13 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%,
 }
 .card:hover #currentIcon{ transform: scale(1.1) translateY(-6px); }
 
-/* Temps */
 .temp{font-size:56px;font-weight:300}
 .cond{font-size:14px;color:var(--muted);margin-top:6px}
 
-/* Meta grid */
 .meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
 .meta-title{font-size:12px;color:var(--muted)}
 .meta-val{font-weight:700;font-size:16px}
 
-/* hourly */
 .hourly-scroll{display:flex;gap:12px;overflow-x:auto; padding:12px 6px; scrollbar-width: thin; scrollbar-color: var(--accent) transparent;}
 .hourly-item{
     min-width:84px;
@@ -186,7 +173,6 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%,
 }
 .hourly-item img:hover{ transform: scale(1.15) translateY(-4px); }
 
-/* daily grid */
 .daily-grid{display:flex;flex-direction:column;gap:8px;margin-top:8px}
 .daily-item{display:flex;align-items:center;justify-content:space-between;padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
 .daily-item img{
@@ -198,20 +184,17 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%,
 }
 .daily-item img:hover{ transform: scale(1.2) translateY(-3px); }
 
-/* Map box (right column) */
 .map-box{background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); border-radius:20px; padding:12px; border:2px solid rgba(255,255,255,0.04); box-shadow: 0 12px 30px rgba(2,6,23,0.6); display:flex;flex-direction:column; gap:8px; height: 100%;}
 .map-header{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;color:#e6eef6;font-size:13px}
 .map-hint{font-size:12px;color:var(--muted)}
 #map{flex:1;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.03)}
 .map-footer{font-size:11px;color:var(--muted);text-align:center}
 
-/* Loading overlay */
 .loading-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.25));backdrop-filter:blur(4px);z-index:100}
 .hidden{display:none}
 .loader{width:46px;height:46px;border-radius:50%;border:4px solid rgba(255,255,255,0.06);border-top-color:var(--accent);animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Small Screens */
 @media (max-width:930px){
     body { overflow: auto; }
     .container{

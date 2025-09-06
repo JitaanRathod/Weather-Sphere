@@ -1,13 +1,8 @@
-// Fully replaced app.js — optimized, debounced input, caching, and map on right
 document.addEventListener('DOMContentLoaded', () => {
-    // -------------- CONFIG --------------
-    // NOTE: keep the OpenCage key here or replace with your own.
-    const OPENCAGE_API_KEY = '974593a4e67747fbb5d3fc16b4557a51'; // or 'YOUR_OPENCAGE_API_KEY'
-    // Weather API used: open-meteo (no key required)
-    const WEATHER_CACHE_TTL = 10 * 60 * 1000; // 10 minutes cached weather
-    const GEOCODE_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours for geocoding results
+    const OPENCAGE_API_KEY = '974593a4e67747fbb5d3fc16b4557a51'; 
+    const WEATHER_CACHE_TTL = 10 * 60 * 1000; 
+    const GEOCODE_CACHE_TTL = 24 * 60 * 60 * 1000;
 
-    // -------------- DOM --------------
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.getElementById('searchBtn');
     const locateBtn = document.getElementById('locateBtn');
@@ -25,11 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingOverlay = document.getElementById('loading');
     const recentChips = document.getElementById('recentChips');
 
-    // -------------- CACHES --------------
-    const geoCache = new Map(); // key: query string -> {ts, data}
-    const weatherCache = new Map(); // key: lat,lon -> {ts, data, label}
+    const geoCache = new Map(); 
+    const weatherCache = new Map();
 
-    // -------------- HELPER / UTIL --------------
+    
     function showLoading(on = true) {
         if (on) loadingOverlay.classList.remove('hidden');
         else loadingOverlay.classList.add('hidden');
@@ -58,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // -------------- WEATHER ICONS / MAPPING --------------
     function getWeatherInfo(code, is_day = 1) {
         const map = {
             0: {desc: 'Clear sky', icon: `01${is_day ? 'd' : 'n'}`},
@@ -90,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return `https://openweathermap.org/img/wn/${code}@2x.png`;
     }
 
-    // -------------- MAP (Leaflet) --------------
+   
     const map = L.map('map', {attributionControl: false}).setView([20.5937, 78.9629], 5);
     L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
         maxZoom: 20,
@@ -102,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchLocationNameByCoords(lat, lng, {animateMap: true});
     });
 
-    // -------------- GEOLOCATION --------------
+    
     locateBtn?.addEventListener('click', () => {
         if (!navigator.geolocation) {
             showError('Geolocation not supported');
@@ -118,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, {enableHighAccuracy: false, timeout: 8000});
     });
 
-    // -------------- GEOCODING: city -> coords --------------
+   
     async function geocodeCity(query) {
         if (!query) throw new Error('Empty query');
         const key = `gc:${query.toLowerCase()}`;
@@ -138,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return out;
     }
     
-    // -------------- REVERSE GEOCODING (coords -> name) --------------
+    
     async function reverseGeocode(lat, lon) {
         const key = `rg:${Math.round(lat*1000)},${Math.round(lon*1000)}`;
         const now = Date.now();
@@ -158,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return out;
     }
 
-    // -------------- WEATHER FETCH (open-meteo) --------------
+    
     async function fetchWeatherByCoords(lat, lon, label = null, opts = {}) {
         const k = keyForCoords(lat, lon);
         const now = Date.now();
@@ -194,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // -------------- UI RENDER --------------
+    
     function renderWeather(data, label = null, meta = {}) {
         if (!data) return;
 
@@ -223,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updatedAtEl.textContent = `Updated: ${formatTime(Date.now())}`;
 
-        // Render hourly forecast
+        
         hourlyContainer.innerHTML = '';
         if (data.hourly && data.hourly.time) {
             const startIndex = data.hourly.time.findIndex(t => new Date(t) >= new Date()) || 0;
@@ -248,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
-        // Render daily forecast
+        
         dailyContainer.innerHTML = '';
         if (data.daily && data.daily.time) {
             data.daily.time.forEach((date, idx) => {
@@ -272,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Update map
+      
         if (latlng && !meta.fromCache) {
             map.flyTo(latlng, 10);
             if (marker) marker.setLatLng(latlng);
@@ -294,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // -------------- SEARCH HANDLING --------------
+
     const handleSearch = async () => {
         const query = searchInput.value.trim();
         if (!query) return;
@@ -320,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     searchBtn.addEventListener('click', handleSearch);
 
-    // -------------- RECENT LOCATIONS (as chips) --------------
+   
     let recentLocations = JSON.parse(localStorage.getItem('recentLocations')) || [];
 
     function renderRecents() {
@@ -328,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
         recentLocations.slice(0, 3).forEach(loc => {
             const chip = document.createElement('button');
             chip.className = 'chip';
-            chip.textContent = loc.label.split(',')[0]; // Show city name
+            chip.textContent = loc.label.split(',')[0]; 
             chip.onclick = () => {
                 searchInput.value = loc.label;
                 fetchWeatherByCoords(loc.lat, loc.lon, loc.label);
@@ -338,26 +331,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function addRecentLocation(loc) {
-        // Avoid duplicates
+        
         const existingIndex = recentLocations.findIndex(r => r.label === loc.label);
         if (existingIndex > -1) {
             recentLocations.splice(existingIndex, 1);
         }
         recentLocations.unshift(loc);
-        recentLocations = recentLocations.slice(0, 5); // Keep last 5
+        recentLocations = recentLocations.slice(0, 5); 
         localStorage.setItem('recentLocations', JSON.stringify(recentLocations));
         renderRecents();
     }
     
-    // -------------- INITIAL LOAD --------------
+    
     function initialize() {
         renderRecents();
-        // Load default or last location
+        
         const lastLoc = recentLocations[0];
         if (lastLoc) {
             fetchWeatherByCoords(lastLoc.lat, lastLoc.lon, lastLoc.label);
         } else {
-            // Default to a major city if no history (e.g., London)
             fetchWeatherByCoords(51.5072, -0.1276, "London, United Kingdom");
         }
     }

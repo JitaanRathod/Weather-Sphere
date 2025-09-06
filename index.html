@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <!-- App Header -->
     <header class="app-header">
         <div class="brand">
             <div class="app-logo">
@@ -24,7 +22,7 @@
         </div>
         <div class="header-actions">
             <div class="chips" id="recentChips">
-                <!-- Recent location chips will be inserted here -->
+                
             </div>
             <button id="locateBtn" title="Get my location">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z"/><path d="M12 2v4M12 18v4M22 12h-4M6 12H2m7.5-5.5L5 2m14 14.5L14.5 12"/></svg>
@@ -32,17 +30,16 @@
         </div>
     </header>
 
-    <!-- Main Container -->
     <main class="container">
-        <!-- Left Column (Weather Details) -->
+      
         <div class="left-col">
-            <!-- Search -->
+          
             <div class="search-row">
                 <input type="text" id="searchInput" placeholder="Search city or click the map...">
                 <button id="searchBtn">Search</button>
             </div>
 
-            <!-- Current Weather Card -->
+            
             <div class="card current-weather">
                 <div class="location-row">
                     <h2 id="locationName">Loading...</h2>
@@ -77,24 +74,21 @@
                 </div>
             </div>
 
-            <!-- Hourly Forecast Card -->
             <div class="card">
                 <h3>Next 24 Hours</h3>
                 <div class="hourly-scroll" id="hourlyContainer">
-                    <!-- Hourly items will be injected by JS -->
+                    
                 </div>
             </div>
 
-            <!-- 7-Day Forecast Card -->
             <div class="card">
                 <h3>7-Day Forecast</h3>
                 <div class="daily-grid" id="dailyContainer">
-                    <!-- Daily items will be injected by JS -->
+                  
                 </div>
             </div>
         </div>
 
-        <!-- Right Column (Map) -->
         <aside class="right-col">
             <div class="map-box">
                 <div class="map-header">
@@ -106,7 +100,6 @@
             </div>
         </aside>
 
-        <!-- Loading Overlay -->
         <div id="loading" class="loading-overlay hidden">
             <div class="loader"></div>
         </div>
