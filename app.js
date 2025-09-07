@@ -85,10 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
    
     const map = L.map('map', {attributionControl: false}).setView([20.5937, 78.9629], 5);
-   L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-	maxZoom: 17,
-	attribution: 'Map data: © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: © <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 20,
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>'
 }).addTo(map);
+
 
     let marker = null;
 
@@ -359,3 +360,4 @@ document.addEventListener('DOMContentLoaded', () => {
     initialize();
 
 });
+
