@@ -18,7 +18,7 @@ A sleek, modern weather dashboard built with vanilla JavaScript, HTML, and CSS. 
 
 *   **Frontend:** HTML5, CSS3, Vanilla JavaScript
 *   **APIs:**
-    *   [Open-Meteo](https://open-meteo.com/): For weather forecast data (no API key required).
+    *   [Open-Meteo](https://open-meteo.com/): For weather forecast data.
     *   [OpenCage Geocoder](https://opencagedata.com/): For reverse geocoding (translating coordinates to a location name).
 *   **Mapping:** [Leaflet.js](https://leafletjs.com/) with Stadia Maps tiles.
 
