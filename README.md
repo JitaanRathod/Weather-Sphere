@@ -2,7 +2,7 @@
 
 A sleek, modern weather dashboard built with vanilla JavaScript, HTML, and CSS. Provides live weather data, a 7-day forecast, and an interactive map.
 
-### [Live Demo](https://JitaanRathod.github.io/Weather-Sphere/)
+### [Live Website](https://JitaanRathod.github.io/Weather-Sphere/)
 
 ## Features
 
