@@ -1,267 +1,253 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WeatherSphere</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WeatherSphere</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <canvas id="bgCanvas" aria-hidden="true"></canvas>
+  <!-- SPLASH -->
+  <div id="splash" class="splash">
+    <div class="splash-orb so1"></div><div class="splash-orb so2"></div><div class="splash-orb so3"></div>
+    <canvas id="splashCanvas"></canvas>
+    <div class="splash-content">
+      <div class="splash-logo-wrap">
+        <svg viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="28" fill="url(#slg1)"/>
+          <path d="M18 38 Q16 30 22 26 Q22 16 32 16 Q40 10 48 18 Q54 18 54 26 Q58 26 58 32 Q58 38 52 38 Z" fill="white" opacity="0.9"/>
+          <circle cx="32" cy="24" r="7" fill="url(#slg2)" opacity="0.85"/>
+          <defs>
+            <linearGradient id="slg1" x1="0" y1="0" x2="64" y2="64"><stop offset="0%" stop-color="#4FACFE"/><stop offset="100%" stop-color="#00F2FE"/></linearGradient>
+            <linearGradient id="slg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFE259"/><stop offset="100%" stop-color="#FFA751"/></linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <h1 class="splash-title">WeatherSphere</h1>
+      <p class="splash-tagline">Live · Accurate · Beautiful</p>
+      <p class="splash-desc">Real-time weather, AI-powered climate insights,<br>and hyper-local forecasts — all in one place.</p>
+      <div class="splash-features">
+        <div class="splash-feat"><span>🌍</span><span>Global Coverage</span></div>
+        <div class="splash-feat"><span>⚡</span><span>Live Updates</span></div>
+        <div class="splash-feat"><span>🗺</span><span>Interactive Map</span></div>
+        <div class="splash-feat"><span>📜</span><span>AI Climate Data</span></div>
+      </div>
+      <div class="splash-scroll-hint">
+        <div class="scroll-chevron"></div>
+        <span>Scroll to explore</span>
+      </div>
+    </div>
+  </div>
 
-    <!-- Error Toast -->
-    <div id="errorToast" class="error-toast hidden" role="alert">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <span id="errorMsg">Error</span>
-        <button class="toast-close" onclick="this.closest('.error-toast').classList.add('hidden')">✕</button>
+  <!-- DAY DETAIL MODAL -->
+  <div id="dayModal" class="day-modal hidden" role="dialog">
+    <div class="day-modal-backdrop" id="dayModalBackdrop"></div>
+    <div class="day-modal-panel">
+      <button class="day-modal-close" id="dayModalClose">✕</button>
+      <div id="dayModalContent"></div>
+    </div>
+  </div>
+
+  <!-- Background -->
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Toast -->
+  <div id="errorToast" class="toast hidden">
+    <span>⚠</span><span id="errorMsg">Error</span>
+    <button onclick="this.closest('.toast').classList.add('hidden')">✕</button>
+  </div>
+
+  <!-- Tracking banner -->
+  <div id="trackBanner" class="track-banner hidden">
+    <span class="live-dot"></span><span id="trackText">Live tracking</span>
+    <button id="stopTrack">Stop</button>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header reveal-item" data-delay="0">
+    <div class="header-brand">
+      <div class="logo">
+        <svg viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="14" fill="url(#lg1)"/>
+          <path d="M10 18 Q9 14 12 12 Q12 7 17 7 Q21 4 25 8 Q28 8 28 12 Q30 12 30 15 Q30 18 27 18 Z" fill="white" opacity="0.9"/>
+          <circle cx="16" cy="13" r="4" fill="url(#lg2)" opacity="0.8"/>
+          <defs>
+            <linearGradient id="lg1" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#4FACFE"/><stop offset="100%" stop-color="#00F2FE"/></linearGradient>
+            <linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFE259"/><stop offset="100%" stop-color="#FFA751"/></linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">WeatherSphere</div>
+        <div class="brand-sub">Live · Accurate · Beautiful</div>
+      </div>
+    </div>
+    <div class="header-search">
+      <div class="search-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Search city…" autocomplete="off" spellcheck="false">
+        <div id="suggestions" class="suggestions hidden"></div>
+      </div>
+      <button id="searchBtn" class="btn-search">Search</button>
+    </div>
+    <div class="header-controls">
+      <div id="recentChips" class="chips-row"></div>
+      <button id="unitToggle" class="ctrl-btn">°C</button>
+      <button id="themeToggle" class="ctrl-btn">
+        <svg id="themeIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button id="trackBtn" class="ctrl-btn ctrl-track" title="Live tracking">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main" id="appMain">
+    <div class="col-left">
+      <div id="favSection" class="fav-bar hidden reveal-item" data-delay="1">
+        <span class="fav-label">⭐ Saved</span>
+        <div id="favChips" class="chips-row"></div>
+      </div>
+      <div class="card hero-card reveal-item" id="heroCard" data-delay="2">
+        <div class="hero-bg-orb"></div>
+        <div class="hero-top">
+          <div><h1 id="locationName" class="hero-city">Loading…</h1><div id="updatedAt" class="hero-updated">—</div></div>
+          <button id="favBtn" class="fav-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </button>
+        </div>
+        <div class="hero-body">
+          <div class="hero-icon-wrap"><img id="currentIcon" class="hero-icon" src="" alt=""><div id="iconGlow" class="hero-icon-glow"></div></div>
+          <div class="hero-temp-block">
+            <div id="currentTemp" class="hero-temp">--°</div>
+            <div id="currentCondition" class="hero-cond">--</div>
+            <div id="hiLo" class="hero-hilo">H: --° · L: --°</div>
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat"><div class="stat-icon">🌡️</div><div class="stat-lbl">Feels like</div><div id="feelsLike" class="stat-val">--°</div></div>
+          <div class="stat"><div class="stat-icon">💧</div><div class="stat-lbl">Humidity</div><div id="humidity" class="stat-val">--%</div></div>
+          <div class="stat"><div class="stat-icon">💨</div><div class="stat-lbl">Wind</div><div id="windSpeed" class="stat-val">--</div></div>
+          <div class="stat"><div class="stat-icon">🧭</div><div class="stat-lbl">Direction</div><div id="windDir" class="stat-val">--</div></div>
+          <div class="stat"><div class="stat-icon">📊</div><div class="stat-lbl">Pressure</div><div id="pressure" class="stat-val">--</div></div>
+          <div class="stat"><div class="stat-icon">👁</div><div class="stat-lbl">Visibility</div><div id="visibility" class="stat-val">--</div></div>
+          <div class="stat"><div class="stat-icon">🌅</div><div class="stat-lbl">Sunrise</div><div id="sunrise" class="stat-val">--</div></div>
+          <div class="stat"><div class="stat-icon">🌇</div><div class="stat-lbl">Sunset</div><div id="sunset" class="stat-val">--</div></div>
+        </div>
+      </div>
+      <div class="row-2col reveal-item" data-delay="3">
+        <div class="card uv-card">
+          <div class="card-tag">☀️ UV INDEX</div>
+          <div class="card-num-row"><div id="uvValue" class="card-num">--</div><div id="uvLabel" class="card-badge">--</div></div>
+          <div class="uv-bar-wrap">
+            <div class="uv-bar-track"><div id="uvFill" class="uv-bar-fill"></div><div id="uvDot" class="uv-bar-dot"></div></div>
+            <div class="uv-scale"><span>Low</span><span>Mod</span><span>High</span><span>V.Hi</span><span>Ext</span></div>
+          </div>
+        </div>
+        <div class="card aqi-card">
+          <div class="card-tag">🌬 AIR QUALITY</div>
+          <div class="card-num-row"><div id="aqiValue" class="card-num">--</div><div id="aqiLabel" class="card-badge">--</div></div>
+          <div class="aqi-row">
+            <div class="aqi-pill"><span class="aqi-pill-name">PM2.5</span><span id="pm25" class="aqi-pill-val">--</span></div>
+            <div class="aqi-pill"><span class="aqi-pill-name">PM10</span><span id="pm10" class="aqi-pill-val">--</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card reveal-item" data-delay="4">
+        <div class="card-hd">🕐 NEXT 24 HOURS</div>
+        <div id="hourlyStrip" class="hourly-strip"></div>
+      </div>
+      <div class="card reveal-item" data-delay="5">
+        <div class="card-hd-row">
+          <span class="card-hd">📅 7-DAY FORECAST</span>
+          <span class="forecast-hint">Tap a day for details</span>
+        </div>
+        <div id="dailyList" class="daily-list"></div>
+      </div>
+      <div class="card climate-card reveal-item" data-delay="6">
+        <div class="card-hd">📜 HISTORICAL CLIMATE</div>
+        <div id="climateLoading" class="skeletons">
+          <div class="skel w60"></div><div class="skel w90"></div><div class="skel w70"></div>
+          <div class="skel w60" style="margin-top:12px"></div><div class="skel w90"></div><div class="skel w50"></div>
+        </div>
+        <div id="climateStats" class="climate-stat-grid hidden"></div>
+        <div id="climateSections" class="climate-sections hidden"></div>
+        <div id="climateError" class="climate-err hidden">
+          <div class="err-icon">⚠️</div>
+          <p id="climateErrorMsg">Could not load climate data.</p>
+          <button id="climateRetry" class="retry-btn">Retry</button>
+        </div>
+      </div>
     </div>
 
-    <!-- Location tracking banner -->
-    <div id="trackBanner" class="track-banner hidden">
-        <span class="track-pulse"></span>
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
-        <span id="trackText">Tracking your location</span>
-        <button id="stopTrack" class="track-stop">Stop</button>
+    <aside class="col-right">
+      <div class="card map-card reveal-item" data-delay="2">
+        <div class="map-header">
+          <span class="card-hd">🗺 LIVE MAP</span>
+          <span class="map-hint">Click anywhere for weather</span>
+        </div>
+        <div class="map-border-wrap">
+          <div id="map"></div>
+        </div>
+        <div id="mapLoader" class="map-loader hidden"><div class="map-spin"></div><span>Fetching…</span></div>
+      </div>
+      <div class="card reveal-item" data-delay="3">
+        <div class="card-hd">⚡ INSIGHTS</div>
+        <div id="insightsList" class="insights-list">
+          <div class="skel-insight"></div><div class="skel-insight"></div><div class="skel-insight"></div>
+        </div>
+      </div>
+      <div class="card reveal-item" data-delay="4">
+        <div class="card-hd">🌡 WEEKLY RANGE</div>
+        <div id="rangeList" class="range-list"></div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- FOOTER — bold brand, highlighted name -->
+  <footer class="footer reveal-item" data-delay="7">
+    <div class="footer-left">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="14" fill="url(#flg)"/>
+            <path d="M10 18 Q9 14 12 12 Q12 7 17 7 Q21 4 25 8 Q28 8 28 12 Q30 12 30 15 Q30 18 27 18 Z" fill="white" opacity="0.9"/>
+            <defs><linearGradient id="flg" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#4FACFE"/><stop offset="100%" stop-color="#00F2FE"/></linearGradient></defs>
+          </svg>
+        </div>
+        <div>
+          <div class="footer-name">WeatherSphere</div>
+          <div class="footer-tagline">Live · Accurate · Beautiful</div>
+        </div>
+      </div>
     </div>
-
-    <!-- HEADER -->
-    <header class="app-header">
-        <div class="brand">
-            <div class="app-logo">
-                <svg id="morphIcon" viewBox="0 0 36 36" fill="none">
-                    <g id="sunGroup">
-                        <circle cx="18" cy="18" r="7" fill="white" id="sunCore"/>
-                        <g id="sunRays" stroke="white" stroke-width="2" stroke-linecap="round">
-                            <line x1="18" y1="3" x2="18" y2="7"/><line x1="18" y1="29" x2="18" y2="33"/>
-                            <line x1="3" y1="18" x2="7" y2="18"/><line x1="29" y1="18" x2="33" y2="18"/>
-                            <line x1="7.1" y1="7.1" x2="9.9" y2="9.9"/><line x1="26.1" y1="26.1" x2="28.9" y2="28.9"/>
-                            <line x1="7.1" y1="28.9" x2="9.9" y2="26.1"/><line x1="26.1" y1="9.9" x2="28.9" y2="7.1"/>
-                        </g>
-                    </g>
-                    <g id="cloudGroup" opacity="0">
-                        <path d="M8 22 Q6 18 10 16 Q10 10 16 10 Q20 6 26 10 Q30 10 30 15 Q33 15 33 19 Q33 23 29 23 Z" fill="white" opacity="0.9"/>
-                    </g>
-                </svg>
-            </div>
-            <div class="brand-text">
-                <div class="app-name">WeatherSphere</div>
-                <div class="app-tag">Live · Smooth · Beautiful</div>
-            </div>
-        </div>
-
-        <div class="header-search">
-            <div class="search-wrap">
-                <svg class="s-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" id="searchInput" placeholder="Search any city…" autocomplete="off" spellcheck="false">
-            </div>
-            <button id="searchBtn" class="btn-primary">Search</button>
-        </div>
-
-        <div class="header-right">
-            <div class="recent-chips" id="recentChips"></div>
-            <div class="hdr-btns">
-                <button id="unitToggle" class="hdr-btn" title="Toggle °C/°F">°C</button>
-                <button id="themeToggle" class="hdr-btn" title="Toggle theme">
-                    <svg id="themeIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                </button>
-                <button id="locateBtn" class="hdr-btn locate-btn" title="Use my location">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
-                </button>
-                <button id="trackBtn" class="hdr-btn track-btn" title="Live location tracking">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <main class="main-layout">
-        <!-- LEFT -->
-        <div class="left-col">
-
-            <!-- Fav bar -->
-            <div id="favSection" class="fav-bar hidden">
-                <span class="fav-label">⭐ Saved</span>
-                <div class="fav-chips" id="favChips"></div>
-            </div>
-
-            <!-- Hero weather card -->
-            <div class="card hero-card" id="heroCard">
-                <div class="hero-top">
-                    <div class="hero-location">
-                        <h2 id="locationName">Loading…</h2>
-                        <div id="updatedAt" class="updated-at">—</div>
-                    </div>
-                    <button id="favBtn" class="fav-star" title="Favourite">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                    </button>
-                </div>
-
-                <div class="hero-main">
-                    <div class="weather-icon-wrap">
-                        <img id="currentIcon" src="" alt="weather" class="weather-icon">
-                        <div class="icon-glow" id="iconGlow"></div>
-                    </div>
-                    <div class="hero-temp-block">
-                        <div id="currentTemp" class="big-temp">--°</div>
-                        <div id="currentCondition" class="condition-text">--</div>
-                    </div>
-                </div>
-
-                <div class="stats-grid">
-                    <div class="stat-cell">
-                        <div class="stat-icon">🌡️</div>
-                        <div class="stat-label">Feels Like</div>
-                        <div id="feelsLike" class="stat-val">--°</div>
-                    </div>
-                    <div class="stat-cell">
-                        <div class="stat-icon">💧</div>
-                        <div class="stat-label">Humidity</div>
-                        <div id="humidity" class="stat-val">--%</div>
-                    </div>
-                    <div class="stat-cell">
-                        <div class="stat-icon">💨</div>
-                        <div class="stat-label">Wind</div>
-                        <div id="windSpeed" class="stat-val">--</div>
-                    </div>
-                    <div class="stat-cell">
-                        <div class="stat-icon">🧭</div>
-                        <div class="stat-label">Direction</div>
-                        <div id="windDir" class="stat-val">--</div>
-                    </div>
-                    <div class="stat-cell">
-                        <div class="stat-icon">📊</div>
-                        <div class="stat-label">Pressure</div>
-                        <div id="pressure" class="stat-val">--</div>
-                    </div>
-                    <div class="stat-cell">
-                        <div class="stat-icon">👁️</div>
-                        <div class="stat-label">Visibility</div>
-                        <div id="visibility" class="stat-val">--</div>
-                    </div>
-                    <div class="stat-cell">
-                        <div class="stat-icon">🌅</div>
-                        <div class="stat-label">Sunrise</div>
-                        <div id="sunrise" class="stat-val">--:--</div>
-                    </div>
-                    <div class="stat-cell">
-                        <div class="stat-icon">🌇</div>
-                        <div class="stat-label">Sunset</div>
-                        <div id="sunset" class="stat-val">--:--</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- UV + AQI -->
-            <div class="two-col-row">
-                <div class="card uv-card">
-                    <div class="card-label">☀️ UV INDEX</div>
-                    <div id="uvValue" class="card-big-num">--</div>
-                    <div id="uvLabel" class="card-sub-label">--</div>
-                    <div class="uv-track"><div id="uvFill" class="uv-fill"></div></div>
-                    <div class="uv-scale">
-                        <span>Low</span><span>Mod</span><span>High</span><span>V.High</span><span>Ext</span>
-                    </div>
-                </div>
-                <div class="card aqi-card">
-                    <div class="card-label">🌬️ AIR QUALITY</div>
-                    <div id="aqiValue" class="card-big-num">--</div>
-                    <div id="aqiLabel" class="card-sub-label">--</div>
-                    <div class="aqi-pills">
-                        <div class="aqi-pill">
-                            <span class="pill-name">PM2.5</span>
-                            <span id="pm25" class="pill-val">--</span>
-                        </div>
-                        <div class="aqi-pill">
-                            <span class="pill-name">PM10</span>
-                            <span id="pm10" class="pill-val">--</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Hourly -->
-            <div class="card">
-                <div class="section-head">
-                    <span>🕐 NEXT 24 HOURS</span>
-                </div>
-                <div class="hourly-strip" id="hourlyContainer"></div>
-            </div>
-
-            <!-- 7-day -->
-            <div class="card">
-                <div class="section-head">
-                    <span>📅 7-DAY FORECAST</span>
-                </div>
-                <div class="forecast-list" id="dailyContainer"></div>
-            </div>
-
-            <!-- Precipitation chart -->
-            <div class="card chart-card">
-                <div class="section-head">
-                    <span>🌧️ PRECIPITATION (7 DAYS)</span>
-                    <span class="unit-badge">mm</span>
-                </div>
-                <div class="chart-area">
-                    <canvas id="precipChart"></canvas>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- RIGHT -->
-        <aside class="right-col">
-
-            <!-- Map — big and prominent -->
-            <div class="card map-card">
-                <div class="map-top">
-                    <span class="map-title-label">🗺️ LIVE MAP</span>
-                    <span class="map-hint-text">Click anywhere for weather</span>
-                </div>
-                <div id="map"></div>
-            </div>
-
-            <!-- Insights -->
-            <div class="card insights-card">
-                <div class="section-head">⚡ WEATHER INSIGHTS</div>
-                <div id="insightsList" class="insights-body">
-                    <div class="insight-skeleton"></div>
-                    <div class="insight-skeleton"></div>
-                    <div class="insight-skeleton"></div>
-                </div>
-            </div>
-
-            <!-- Temp range -->
-            <div class="card range-card">
-                <div class="section-head">🌡️ WEEKLY RANGE</div>
-                <div id="tempRangeList" class="range-body"></div>
-            </div>
-
-        </aside>
-    </main>
-
-    <footer class="app-footer">
-        <div class="footer-inner">
-            <span>⛅ <strong>WeatherSphere</strong></span>
-            <span class="footer-sep">|</span>
-            <span>Data: <a href="https://open-meteo.com" target="_blank">Open-Meteo</a></span>
-            <span>·</span>
-            <span>Geo: <a href="https://opencagedata.com" target="_blank">OpenCage</a></span>
-            <span>·</span>
-            <span>Map: <a href="https://leafletjs.com" target="_blank">Leaflet</a> + CARTO</span>
-            <span class="footer-sep">|</span>
-            <span id="footerClock" class="footer-clock"></span>
-        </div>
-    </footer>
-
-    <div id="loading" class="loading-veil hidden">
-        <div class="spinner-ring"><div></div><div></div><div></div></div>
+    <div class="footer-center">
+      <span>Data: <a href="https://open-meteo.com" target="_blank">Open-Meteo</a></span>
+      <span class="sep">·</span>
+      <span>Geo: <a href="https://opencagedata.com" target="_blank">OpenCage</a></span>
+      <span class="sep">·</span>
+      <span>Map: <a href="https://leafletjs.com" target="_blank">Leaflet</a></span>
     </div>
+    <div class="footer-right">
+      <span id="clock" class="footer-clock"></span>
+    </div>
+  </footer>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="app.js"></script>
+  <div id="loading" class="loading-veil hidden">
+    <div class="spinner"><div></div><div></div><div></div></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/climate.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
