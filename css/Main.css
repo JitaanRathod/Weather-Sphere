@@ -73,6 +73,7 @@ body{font-family:var(--font-body);background:var(--bg-deep);color:var(--t1);min-
 button{cursor:pointer;border:none;background:none;font-family:var(--font-body)}
 input{border:none;background:none;font-family:var(--font-body);outline:none}
 a{color:var(--cyan);text-decoration:none}
+.hidden{display:none !important}
 
 /* ── ORB BACKGROUND ───────────────────────────────────── */
 #bgCanvas{position:fixed;inset:0;pointer-events:none;z-index:0}
@@ -518,7 +519,9 @@ a{color:var(--cyan);text-decoration:none}
 @media(max-width:700px){
   :root{--pad:12px;--col-right-w:100%}
   .header{padding:0 12px;gap:8px;height:60px}
-  .header-controls{display:none}
+  .header-controls{gap:4px}
+  #recentChips{display:none}
+  .ctrl-btn{min-width:32px;height:32px;padding:0 6px;font-size:0.75rem}
   .logo{width:36px;height:36px}
   .brand-name{font-size:0.95rem}
   .brand-sub{display:none}

@@ -45,8 +45,11 @@
       /flood|drought|cyclone|storm|heatwave/i,/annual|average|record/i,
       /celsius|fahrenheit|°[CF]|\bmm\b|\bcm\b/i
     ];
+    const exclude = /population|capital|river|mayor|metropolitan|founded|economy|GDP|established|area of/i;
+
     const scored = sentences.map(s=>{
-      let score=0;
+      let score = 0;
+      if (exclude.test(s)) score -= 10;
       keywords.forEach(k=>{if(k.test(s))score++;});
       if(/\d/.test(s)) score++;
       return {s,score};
