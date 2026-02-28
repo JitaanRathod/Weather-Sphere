@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WeatherSphere</title>
+
+  <!-- SVG Favicon — orbital sphere with sun + cloud -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3CradialGradient id='a' cx='38%25' cy='30%25' r='65%25'%3E%3Cstop offset='0%25' stop-color='%2367e8f9'/%3E%3Cstop offset='55%25' stop-color='%230ea5e9'/%3E%3Cstop offset='100%25' stop-color='%230c4a6e'/%3E%3C/radialGradient%3E%3CradialGradient id='b' cx='40%25' cy='35%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%23fef08a'/%3E%3Cstop offset='100%25' stop-color='%23f59e0b'/%3E%3C/radialGradient%3E%3CclipPath id='c'%3E%3Ccircle cx='32' cy='32' r='29'/%3E%3C/clipPath%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23a)'/%3E%3Cellipse cx='32' cy='32' rx='29' ry='10' fill='none' stroke='rgba(255,255,255,0.15)' stroke-width='1' clip-path='url(%23c)'/%3E%3Cellipse cx='32' cy='32' rx='10' ry='29' fill='none' stroke='rgba(255,255,255,0.1)' stroke-width='1' clip-path='url(%23c)'/%3E%3Ccircle cx='32' cy='17' r='7' fill='url(%23b)' opacity='0.95'/%3E%3Cg clip-path='url(%23c)'%3E%3Cpath d='M12 42 Q10 33 18 29 Q18 18 28 18 Q36 13 44 21 Q50 21 50 28 Q54 28 54 34 Q54 42 47 42 Z' fill='white' opacity='0.93'/%3E%3C/g%3E%3Ccircle cx='32' cy='32' r='29.5' fill='none' stroke='rgba(255,255,255,0.2)' stroke-width='1'/%3E%3C/svg%3E">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -16,14 +20,46 @@
     <canvas id="splashCanvas"></canvas>
     <div class="splash-content">
       <div class="splash-logo-wrap">
-        <svg viewBox="0 0 64 64" fill="none">
-          <circle cx="32" cy="32" r="28" fill="url(#slg1)"/>
-          <path d="M18 38 Q16 30 22 26 Q22 16 32 16 Q40 10 48 18 Q54 18 54 26 Q58 26 58 32 Q58 38 52 38 Z" fill="white" opacity="0.9"/>
-          <circle cx="32" cy="24" r="7" fill="url(#slg2)" opacity="0.85"/>
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="slg1" x1="0" y1="0" x2="64" y2="64"><stop offset="0%" stop-color="#4FACFE"/><stop offset="100%" stop-color="#00F2FE"/></linearGradient>
-            <linearGradient id="slg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFE259"/><stop offset="100%" stop-color="#FFA751"/></linearGradient>
+            <radialGradient id="sp-g" cx="38%" cy="30%" r="65%">
+              <stop offset="0%" stop-color="#a5f3fc"/>
+              <stop offset="40%" stop-color="#22d3ee"/>
+              <stop offset="75%" stop-color="#0284c7"/>
+              <stop offset="100%" stop-color="#0c4a6e"/>
+            </radialGradient>
+            <radialGradient id="sp-s" cx="40%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#fef9c3"/>
+              <stop offset="60%" stop-color="#fbbf24"/>
+              <stop offset="100%" stop-color="#d97706"/>
+            </radialGradient>
+            <radialGradient id="sp-r" cx="30%" cy="25%" r="75%">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.35)"/>
+              <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+            </radialGradient>
+            <filter id="sp-gf"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <clipPath id="sp-c"><circle cx="40" cy="40" r="36"/></clipPath>
           </defs>
+          <circle cx="40" cy="40" r="36" fill="url(#sp-g)"/>
+          <ellipse cx="40" cy="40" rx="36" ry="11" fill="none" stroke="rgba(255,255,255,0.13)" stroke-width="1" clip-path="url(#sp-c)"/>
+          <ellipse cx="40" cy="40" rx="36" ry="22" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1" clip-path="url(#sp-c)"/>
+          <ellipse cx="40" cy="40" rx="12" ry="36" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" clip-path="url(#sp-c)"/>
+          <circle cx="40" cy="40" r="36" fill="url(#sp-r)"/>
+          <g filter="url(#sp-gf)"><circle cx="40" cy="21" r="8.5" fill="url(#sp-s)"/></g>
+          <g stroke="#fcd34d" stroke-width="1.5" stroke-linecap="round" opacity="0.85">
+            <line x1="40" y1="9" x2="40" y2="6.5"/>
+            <line x1="50" y1="12" x2="52" y2="10"/>
+            <line x1="54" y1="21" x2="57" y2="21"/>
+            <line x1="50" y1="30" x2="52" y2="32"/>
+            <line x1="30" y1="12" x2="28" y2="10"/>
+            <line x1="26" y1="21" x2="23" y2="21"/>
+          </g>
+          <g clip-path="url(#sp-c)">
+            <path d="M16 55 Q14 45 22 40 Q22 29 33 29 Q42 23 51 32 Q57 32 57 39 Q62 39 62 46 Q62 55 54 55 Z" fill="white" opacity="0.95"/>
+            <path d="M20 42 Q22 38 28 37" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          </g>
+          <circle cx="40" cy="40" r="35.5" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+          <path d="M15 28 Q18 17 30 14" stroke="rgba(255,255,255,0.45)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
         </svg>
       </div>
       <h1 class="splash-title">WeatherSphere</h1>
@@ -71,19 +107,47 @@
   <header class="header reveal-item" data-delay="0">
     <div class="header-brand">
       <div class="logo">
-        <svg viewBox="0 0 32 32" fill="none">
-          <circle cx="16" cy="16" r="14" fill="url(#lg1)"/>
-          <path d="M10 18 Q9 14 12 12 Q12 7 17 7 Q21 4 25 8 Q28 8 28 12 Q30 12 30 15 Q30 18 27 18 Z" fill="white" opacity="0.9"/>
-          <circle cx="16" cy="13" r="4" fill="url(#lg2)" opacity="0.8"/>
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="lg1" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#4FACFE"/><stop offset="100%" stop-color="#00F2FE"/></linearGradient>
-            <linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFE259"/><stop offset="100%" stop-color="#FFA751"/></linearGradient>
+            <radialGradient id="h-g" cx="38%" cy="30%" r="65%">
+              <stop offset="0%" stop-color="#a5f3fc"/>
+              <stop offset="40%" stop-color="#22d3ee"/>
+              <stop offset="75%" stop-color="#0284c7"/>
+              <stop offset="100%" stop-color="#0c4a6e"/>
+            </radialGradient>
+            <radialGradient id="h-s" cx="40%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#fef9c3"/>
+              <stop offset="60%" stop-color="#fbbf24"/>
+              <stop offset="100%" stop-color="#d97706"/>
+            </radialGradient>
+            <radialGradient id="h-r" cx="30%" cy="25%" r="75%">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.35)"/>
+              <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+            </radialGradient>
+            <clipPath id="h-c"><circle cx="40" cy="40" r="36"/></clipPath>
           </defs>
+          <circle cx="40" cy="40" r="36" fill="url(#h-g)"/>
+          <ellipse cx="40" cy="40" rx="36" ry="11" fill="none" stroke="rgba(255,255,255,0.13)" stroke-width="1" clip-path="url(#h-c)"/>
+          <ellipse cx="40" cy="40" rx="12" ry="36" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" clip-path="url(#h-c)"/>
+          <circle cx="40" cy="40" r="36" fill="url(#h-r)"/>
+          <circle cx="40" cy="21" r="8.5" fill="url(#h-s)"/>
+          <g stroke="#fcd34d" stroke-width="1.5" stroke-linecap="round" opacity="0.8">
+            <line x1="40" y1="9" x2="40" y2="6.5"/>
+            <line x1="50" y1="12" x2="52" y2="10"/>
+            <line x1="54" y1="21" x2="57" y2="21"/>
+            <line x1="30" y1="12" x2="28" y2="10"/>
+            <line x1="26" y1="21" x2="23" y2="21"/>
+          </g>
+          <g clip-path="url(#h-c)">
+            <path d="M16 55 Q14 45 22 40 Q22 29 33 29 Q42 23 51 32 Q57 32 57 39 Q62 39 62 46 Q62 55 54 55 Z" fill="white" opacity="0.95"/>
+          </g>
+          <circle cx="40" cy="40" r="35.5" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+          <path d="M15 28 Q18 17 30 14" stroke="rgba(255,255,255,0.45)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
         </svg>
       </div>
       <div>
         <div class="brand-name">WeatherSphere</div>
-        <div class="brand-sub">Live · Accurate · Beautiful</div>
+        <div class="brand-sub">Live · Accurate</div>
       </div>
     </div>
     <div class="header-search">
@@ -130,14 +194,46 @@
           </div>
         </div>
         <div class="stats-row">
-          <div class="stat"><div class="stat-icon">🌡️</div><div class="stat-lbl">Feels like</div><div id="feelsLike" class="stat-val">--°</div></div>
-          <div class="stat"><div class="stat-icon">💧</div><div class="stat-lbl">Humidity</div><div id="humidity" class="stat-val">--%</div></div>
-          <div class="stat"><div class="stat-icon">💨</div><div class="stat-lbl">Wind</div><div id="windSpeed" class="stat-val">--</div></div>
-          <div class="stat"><div class="stat-icon">🧭</div><div class="stat-lbl">Direction</div><div id="windDir" class="stat-val">--</div></div>
-          <div class="stat"><div class="stat-icon">📊</div><div class="stat-lbl">Pressure</div><div id="pressure" class="stat-val">--</div></div>
-          <div class="stat"><div class="stat-icon">👁</div><div class="stat-lbl">Visibility</div><div id="visibility" class="stat-val">--</div></div>
-          <div class="stat"><div class="stat-icon">🌅</div><div class="stat-lbl">Sunrise</div><div id="sunrise" class="stat-val">--</div></div>
-          <div class="stat"><div class="stat-icon">🌇</div><div class="stat-lbl">Sunset</div><div id="sunset" class="stat-val">--</div></div>
+          <div class="stat">
+            <div class="stat-icon-wrap"><span class="stat-icon-svg">🌡️</span></div>
+            <div class="stat-lbl">Feels like</div>
+            <div id="feelsLike" class="stat-val">--°</div>
+          </div>
+          <div class="stat">
+            <div class="stat-icon-wrap"><span class="stat-icon-svg">💧</span></div>
+            <div class="stat-lbl">Humidity</div>
+            <div id="humidity" class="stat-val">--%</div>
+          </div>
+          <div class="stat">
+            <div class="stat-icon-wrap"><span class="stat-icon-svg">💨</span></div>
+            <div class="stat-lbl">Wind</div>
+            <div id="windSpeed" class="stat-val">--</div>
+          </div>
+          <div class="stat">
+            <div class="stat-icon-wrap"><span class="stat-icon-svg">🧭</span></div>
+            <div class="stat-lbl">Direction</div>
+            <div id="windDir" class="stat-val">--</div>
+          </div>
+          <div class="stat">
+            <div class="stat-icon-wrap"><span class="stat-icon-svg">📊</span></div>
+            <div class="stat-lbl">Pressure</div>
+            <div id="pressure" class="stat-val">--</div>
+          </div>
+          <div class="stat">
+            <div class="stat-icon-wrap"><span class="stat-icon-svg">👁️</span></div>
+            <div class="stat-lbl">Visibility</div>
+            <div id="visibility" class="stat-val">--</div>
+          </div>
+          <div class="stat">
+            <div class="stat-icon-wrap"><span class="stat-icon-svg">🌅</span></div>
+            <div class="stat-lbl">Sunrise</div>
+            <div id="sunrise" class="stat-val">--</div>
+          </div>
+          <div class="stat">
+            <div class="stat-icon-wrap"><span class="stat-icon-svg">🌇</span></div>
+            <div class="stat-lbl">Sunset</div>
+            <div id="sunset" class="stat-val">--</div>
+          </div>
         </div>
       </div>
       <div class="row-2col reveal-item" data-delay="3">
@@ -170,7 +266,7 @@
         <div id="dailyList" class="daily-list"></div>
       </div>
       <div class="card climate-card reveal-item" data-delay="6">
-        <div class="card-hd">📜 HISTORICAL CLIMATE</div>
+        <div class="card-hd">📜 HISTORY AND FACTS</div>
         <div id="climateLoading" class="skeletons">
           <div class="skel w60"></div><div class="skel w90"></div><div class="skel w70"></div>
           <div class="skel w60" style="margin-top:12px"></div><div class="skel w90"></div><div class="skel w50"></div>
@@ -196,8 +292,11 @@
         </div>
         <div id="mapLoader" class="map-loader hidden"><div class="map-spin"></div><span>Fetching…</span></div>
       </div>
-      <div class="card reveal-item" data-delay="3">
-        <div class="card-hd">⚡ INSIGHTS</div>
+      <div class="card insights-card reveal-item" data-delay="3">
+        <div class="insights-header">
+          <span class="card-hd">⚡ INSIGHTS</span>
+          
+        </div>
         <div id="insightsList" class="insights-list">
           <div class="skel-insight"></div><div class="skel-insight"></div><div class="skel-insight"></div>
         </div>
@@ -209,30 +308,47 @@
     </aside>
   </main>
 
-  <!-- FOOTER — bold brand, highlighted name -->
+  <!-- FOOTER -->
   <footer class="footer reveal-item" data-delay="7">
     <div class="footer-left">
       <div class="footer-brand">
         <div class="footer-logo">
-          <svg viewBox="0 0 32 32" fill="none">
-            <circle cx="16" cy="16" r="14" fill="url(#flg)"/>
-            <path d="M10 18 Q9 14 12 12 Q12 7 17 7 Q21 4 25 8 Q28 8 28 12 Q30 12 30 15 Q30 18 27 18 Z" fill="white" opacity="0.9"/>
-            <defs><linearGradient id="flg" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#4FACFE"/><stop offset="100%" stop-color="#00F2FE"/></linearGradient></defs>
+          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="f-g" cx="38%" cy="30%" r="65%">
+                <stop offset="0%" stop-color="#a5f3fc"/>
+                <stop offset="40%" stop-color="#22d3ee"/>
+                <stop offset="75%" stop-color="#0284c7"/>
+                <stop offset="100%" stop-color="#0c4a6e"/>
+              </radialGradient>
+              <radialGradient id="f-s" cx="40%" cy="35%" r="60%">
+                <stop offset="0%" stop-color="#fef9c3"/>
+                <stop offset="60%" stop-color="#fbbf24"/>
+                <stop offset="100%" stop-color="#d97706"/>
+              </radialGradient>
+              <radialGradient id="f-r" cx="30%" cy="25%" r="75%">
+                <stop offset="0%" stop-color="rgba(255,255,255,0.35)"/>
+                <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+              </radialGradient>
+              <clipPath id="f-c"><circle cx="40" cy="40" r="36"/></clipPath>
+            </defs>
+            <circle cx="40" cy="40" r="36" fill="url(#f-g)"/>
+            <ellipse cx="40" cy="40" rx="36" ry="11" fill="none" stroke="rgba(255,255,255,0.13)" stroke-width="1" clip-path="url(#f-c)"/>
+            <ellipse cx="40" cy="40" rx="12" ry="36" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" clip-path="url(#f-c)"/>
+            <circle cx="40" cy="40" r="36" fill="url(#f-r)"/>
+            <circle cx="40" cy="21" r="8.5" fill="url(#f-s)"/>
+            <g clip-path="url(#f-c)">
+              <path d="M16 55 Q14 45 22 40 Q22 29 33 29 Q42 23 51 32 Q57 32 57 39 Q62 39 62 46 Q62 55 54 55 Z" fill="white" opacity="0.95"/>
+            </g>
+            <circle cx="40" cy="40" r="35.5" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
           </svg>
         </div>
         <div>
           <div class="footer-name">WeatherSphere</div>
-          <div class="footer-tagline">Live · Accurate · Beautiful</div>
         </div>
       </div>
     </div>
-    <div class="footer-center">
-      <span>Data: <a href="https://open-meteo.com" target="_blank">Open-Meteo</a></span>
-      <span class="sep">·</span>
-      <span>Geo: <a href="https://opencagedata.com" target="_blank">OpenCage</a></span>
-      <span class="sep">·</span>
-      <span>Map: <a href="https://leafletjs.com" target="_blank">Leaflet</a></span>
-    </div>
+
     <div class="footer-right">
       <span id="clock" class="footer-clock"></span>
     </div>
@@ -250,5 +366,4 @@
   <script src="js/ui.js"></script>
   <script src="js/app.js"></script>
 </body>
-
 </html>

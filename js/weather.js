@@ -71,6 +71,7 @@
   WS.fetchWeather = async function(lat,lon,label,opts={}){
     const k=WS.coordKey(lat,lon), now=Date.now();
     if(wxCache[k]&&now-wxCache[k].ts<WX_TTL){
+      WS.mapFlyTo?.(lat,lon);
       WS.renderWeather(wxCache[k].data, label||wxCache[k].label, {fromCache:true});
       fetchAQI(lat,lon);
       return wxCache[k].data;
@@ -85,6 +86,7 @@
       if(!r.ok) throw new Error('Weather API '+r.status);
       const json=await r.json();
       wxCache[k]={ts:Date.now(),data:json,label};
+      WS.mapFlyTo?.(lat,lon);
       WS.renderWeather(json,label,{fromCache:false,...opts});
       fetchAQI(lat,lon);
       return json;

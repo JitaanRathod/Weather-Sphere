@@ -49,11 +49,15 @@
     },300);
   };
 
-  WS.mapFlyTo = function(lat,lon){
+  WS.mapFlyTo = function(lat,lon,skipFly){
     if(!leafMap) return;
-    const dist = leafMap.distance(leafMap.getCenter(),[lat,lon]);
-    if(dist>2000000) leafMap.setView([lat,lon],10,{animate:false});
-    else leafMap.flyTo([lat,lon],10,{duration:1.2,easeLinearity:.3});
+    if(skipFly){
+      leafMap.setView([lat,lon],13,{animate:false});
+    } else {
+      const dist = leafMap.distance(leafMap.getCenter(),[lat,lon]);
+      if(dist>2000000) leafMap.setView([lat,lon],10,{animate:false});
+      else leafMap.flyTo([lat,lon],10,{duration:1.2,easeLinearity:.3});
+    }
     placeMarker(lat,lon);
   };
 
